@@ -1,0 +1,20 @@
+.preloaderContainer{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.preloader{
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+}
+
+/* .preloaderContainer div{
+  margin: 0;
+} */
