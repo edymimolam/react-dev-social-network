@@ -1,11 +1,12 @@
-import {usersAPI, followAPI} from '../API/API'
-import {togglePreloader} from './preloaderReducer'
+import { usersAPI, followAPI } from '../API/API'
+import { togglePreloader } from './preloaderReducer'
+import {updateObjInArray} from '../utils/helpers'
 
-const FOLLOW = 'FOLLOW'
-const UNFOLLOW = 'UNFOLLOW'
-const SET_STATE = 'SET_STATE'
-const SET_TOTAL_COUNT = 'SET_TOTAL_COUNT'
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
+const FOLLOW = 'users/FOLLOW'
+const UNFOLLOW = 'users/UNFOLLOW'
+const SET_STATE = 'users/SET_STATE'
+const SET_TOTAL_COUNT = 'users/SET_TOTAL_COUNT'
+const SET_CURRENT_PAGE = 'users/SET_CURRENT_PAGE'
 
 const initialState = {
   users: [],
@@ -16,31 +17,25 @@ const initialState = {
 
 const usersReducer = (state = initialState, action) => {
 
-  switch(action.type) {
+  switch (action.type) {
 
     case FOLLOW:
       return {
-        ...state, 
-        users: state.users.map((u) => {
-          if(u.id === action.id) u.followed = true 
-          return u
-        })
+        ...state,
+        users: updateObjInArray(state.users, 'id', action.id, {followed: true})
       }
 
-    case UNFOLLOW: 
+    case UNFOLLOW:
       return {
         ...state,
-        users: state.users.map((user) =>{
-          if(user.id === action.id) user.followed = false
-          return user
-        })
+        users: updateObjInArray(state.users, 'id', action.id, {followed: false})
       }
 
-    case SET_STATE: 
-    return {
-      ...state,
-      users: action.users
-    }
+    case SET_STATE:
+      return {
+        ...state,
+        users: action.users
+      }
 
     case SET_TOTAL_COUNT:
       return {
@@ -60,39 +55,36 @@ const usersReducer = (state = initialState, action) => {
 
 }
 
-export const followUser = (id) => ({type: FOLLOW, id: id})
-export const unfollowUser = (id) => ({type: UNFOLLOW, id: id})
-export const setUsersState = (users) => ({type: SET_STATE, users: users})
-export const setUsersTotalCount = (count) => ({type: SET_TOTAL_COUNT, count: count})
-export const setUsersCurrentPage = (pageNum) => ({type: SET_CURRENT_PAGE, pageNum: pageNum})
+const followUser = (id) => ({ type: FOLLOW, id: id })
+const unfollowUser = (id) => ({ type: UNFOLLOW, id: id })
+const setUsersState = (users) => ({ type: SET_STATE, users: users })
+const setUsersTotalCount = (count) => ({ type: SET_TOTAL_COUNT, count: count })
+const setUsersCurrentPage = (pageNum) => ({ type: SET_CURRENT_PAGE, pageNum: pageNum })
 
 export const getUsers = (
-  currentPage = initialState.currentPage, 
+  currentPage = initialState.currentPage,
   usersPerPage = initialState.usersPerPage
-) => (dispatch) => {
-    dispatch(setUsersCurrentPage(currentPage))
-    dispatch(togglePreloader(true))
-    usersAPI.getUsers(currentPage, usersPerPage).then((data) => {
-      dispatch(togglePreloader(false))
-      dispatch(setUsersState(data.items))
-      dispatch(setUsersTotalCount(data.totalCount))
-    })
+) => async (dispatch) => {
+  dispatch(togglePreloader(true))
+  dispatch(setUsersCurrentPage(currentPage))
+  let data = await usersAPI.getUsers(currentPage, usersPerPage)
+  dispatch(setUsersState(data.items))
+  dispatch(setUsersTotalCount(data.totalCount))
+  dispatch(togglePreloader(false))
 }
 
-export const follow = (id) => (dispatch) => {
+const followUnfollowCreator = async (dispatch, id, apiMethod, actionCreator) => {
   dispatch(togglePreloader(true))
-  followAPI.follow(id).then(data => { 
-    if (data.resultCode === 0) dispatch(followUser(id))
-    dispatch(togglePreloader(false))
-  })
+  let data = await apiMethod(id)
+  if (data.resultCode === 0) dispatch(actionCreator(id))
+  dispatch(togglePreloader(false))
 }
 
-export const unfollow = (id) => (dispatch) => {
-  dispatch(togglePreloader(true))
-  followAPI.unfollow(id).then(data => {
-    if (data.resultCode === 0) dispatch(unfollowUser(id))
-    dispatch(togglePreloader(false))
-  })
-}
+export const follow = (id) => (dispatch) => 
+followUnfollowCreator(dispatch, id, followAPI.follow.bind(followAPI), followUser)
+
+export const unfollow = (id) => (dispatch) => 
+followUnfollowCreator(dispatch, id, followAPI.unfollow.bind(followAPI), unfollowUser)
+
 
 export default usersReducer

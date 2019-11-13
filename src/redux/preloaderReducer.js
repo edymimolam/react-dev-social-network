@@ -1,4 +1,4 @@
-const TOGGLE_PRELOADER = 'TOGGLE_PRELOADER'
+const TOGGLE_PRELOADER = 'preloader/TOGGLE_PRELOADER'
 
 let initialState = {
   isFetching: true

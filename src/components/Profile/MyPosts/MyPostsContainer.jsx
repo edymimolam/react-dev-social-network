@@ -1,15 +1,9 @@
-import React from 'react';
-import MyPosts from './MyPosts';
-import {updateNewPostTextAreaCreator, addNewPostCreator} from '../../../redux/profileReducer'
-import {connect} from 'react-redux'
+import React from 'react'
+import MyPosts from './MyPosts'
+import { addNewPost } from '../../../redux/profileReducer'
+import { connect } from 'react-redux'
 
-const mapStateToProps = (state) => ({profilePage: state.profilePage})
+const mapStateToProps = (state) => ({ posts: state.profilePage.posts })
 
-const mapDispatchToProps = (dispatch) => ({
-    onTextAreaChange: (text) => dispatch(updateNewPostTextAreaCreator(text)),
-    onButtonClick: () => dispatch(addNewPostCreator())
-  })
 
-const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)
-
-export default MyPostsContainer;
+export default connect(mapStateToProps, { addNewPost })(MyPosts)

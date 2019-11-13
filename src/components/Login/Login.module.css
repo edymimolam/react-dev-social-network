@@ -1,7 +1,29 @@
 .container {
   width: 100%;
-  margin-top: 30%;
+  margin-top: 10%;
   display: flex;
   justify-content: center;
+  flex-flow: column;
+  align-items: center;
+}
 
+.form {
+  display: flex;
+  flex-flow: column;
+}
+
+.form div {
+  margin: 1rem;
+}
+
+.form input,
+.form button {
+  padding: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem
+}
+.checkbox::after{
+  content: 'Remember me';
+  margin-left: 1.5rem;
 }

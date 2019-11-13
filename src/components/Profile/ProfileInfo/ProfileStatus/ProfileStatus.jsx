@@ -2,20 +2,44 @@ import React from 'react'
 
 class ProfileStatus extends React.Component {
 
-  state = {editMode: false}
-
-  enableStateMode = () => {
-    debugger
-    this.setState({editMode: true})
-    console.log({'this': this})
+  state = {
+    editMode: false,
+    status: this.props.profileStatus
   }
-  disableStateMode = () => this.setState({editMode: false})
 
-  render(){
+  enableEditMode = () => this.setState({ editMode: true })
+  disableEditMode = () => this.setState({ editMode: false })
 
+  onInputChange = (e) => this.setState({ status: e.currentTarget.value })
+  onInputBlur = () => {
+    this.disableEditMode()
+    this.props.updateProfileStatus(this.state.status)
+  }
+
+
+  componentDidUpdate(prevProps) {
+    if(this.props.profileStatus !== prevProps.profileStatus)
+      this.setState({status: this.props.profileStatus})
+  }
+
+
+  render() {
     return <div>
-      { this.state.editMode &&  <input autoFocus type='text' onBlur={this.disableStateMode} value={this.props.status}/> }
-      { !this.state.editMode && <span onDoubleClick={this.enableStateMode}>{this.props.status}</span> }  
+      {
+        this.state.editMode && 
+          <input 
+            autoFocus type='text' 
+            onChange={this.onInputChange} 
+            onBlur={this.onInputBlur} 
+            value={this.state.status} 
+          />
+      }
+      {
+        !this.state.editMode && 
+          <span onDoubleClick={this.enableEditMode}>
+            {(this.state.status !== '') ? this.state.status : 'let\'s set status' }
+          </span>
+      }
     </div>
   }
 

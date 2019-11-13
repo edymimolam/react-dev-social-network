@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Users from './Users'
-import Preloader from '../Preloader/Preloader'
+import Preloader from '../common/Preloader/Preloader'
 import {follow, unfollow, getUsers } from '../../redux/usersReducer'
 
 
@@ -18,8 +18,9 @@ class UsersContainer extends React.Component {
   onUnfollowUserClick = (id) => this.props.unfollow(id)
 
   render() {
-    return <> 
-      {this.props.isFetching ? <Preloader/> : null}
+  
+    return <React.Fragment> 
+      {this.props.isFetching && <Preloader/>}
       <Users  
         users={this.props.users} 
         usersTotalCount={this.props.usersTotalCount} 
@@ -29,7 +30,7 @@ class UsersContainer extends React.Component {
         onUnfollowUserClick={this.onUnfollowUserClick} 
         onPageClick={this.onPageClick}
       />
-    </>
+    </React.Fragment>
   }
 
 }

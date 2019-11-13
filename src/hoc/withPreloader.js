@@ -7,7 +7,6 @@ let mapStateToProps = (state) => ({isFetching: state.preloader.isFetching})
 const withPreloader = (Component) => {
   debugger
   const PreloaderContainer = (props) => {
-    debugger
     if(props.isFetching) return <Preloader/>
     return <Component {...props}/>
   }

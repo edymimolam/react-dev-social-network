@@ -6,13 +6,13 @@
   display: flex;
   flex-flow: row wrap;
 }
-.page{
+/* .page{
   margin-right: .5rem;
   cursor: pointer;
 }
 .pageActive{
   font-weight: bold;
-}
+} */
 .user{
   display: flex;
   margin-bottom: 20px;
