@@ -24,7 +24,16 @@ export const usersAPI = {
 export const profileAPI = {
   getProfileInfo(id) { return server.get(`/profile/${id}`).then(r => r.data) },
   getProfileStatus(id) { return server.get(`/profile/status/${id}`).then(r => r.data) },
-  updateProfileStatus(status) { return server.put('/profile/status', { status }).then(r => r.data) }
+  updateProfileStatus(status) { return server.put('/profile/status', { status }).then(r => r.data) },
+  uploadProfilePhoto(img) {
+    const formData = new FormData()
+    formData.append('image', img)
+    return server.put('profile/photo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(r => r.data)
+  }
 }
 
 export const followAPI = {

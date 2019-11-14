@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from './ProfileInfo.module.css'
 import userIcon from '../../../assets/img/user-icon.png'
 import ProfileStatusViaHooks from './ProfileStatus/ProfileStatusViaHooks'
 import Preloader from '../../common/Preloader/Preloader'
 
 
-const ProfileInfo = ({ profileInfo, profileStatus, updateProfileStatus }) => {
+const ProfileInfo = ({ profileInfo, profileInfo: { aboutMe, photos, fullName }, profileStatus, updateProfileStatus, setProfilePhoto, isOwner }) => {
 
-  if(!profileInfo) return <Preloader/>
+
+  const onProfilePhotoUpload = (e) => {
+    if (e.target.files.length)
+      setProfilePhoto(e.target.files[0])
+  } 
+
+  if (!profileInfo) return <Preloader />
 
   return (
     <div>
       <div className={style.descriptionBlock}>
-        <img
-          src={profileInfo.photos.large ? profileInfo.photos.large : userIcon}
-          alt="User Image"
-          className={style.userImg}
-        />
-        <span>{profileInfo.aboutMe}</span>
+        <div>
+          <img
+            src={photos.large || userIcon}
+            alt="User Image"
+            className={style.userImg}
+          />
+          {isOwner && <input onChange={onProfilePhotoUpload} type="file" name="profilePhotoUpload" accept=".jpg, .jpeg, .png"></input>}
+
+        </div>
+        <span>{aboutMe}</span>
       </div>
       <div>
         <ProfileStatusViaHooks profileStatus={profileStatus} updateProfileStatus={updateProfileStatus} />
