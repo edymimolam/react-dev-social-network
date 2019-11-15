@@ -1,8 +1,9 @@
 import React from 'react'
 import Profile from './Profile'
+import MyPostsContainer from './MyPosts/MyPostsContainer'
 import Preloader from '../common/Preloader/Preloader'
 import { connect } from 'react-redux'
-import { getProfileInfo, getProfileStatus, updateProfileStatus, setProfilePhoto } from '../../redux/profileReducer'
+import { getProfileInfo, getProfileStatus, updateProfileStatus, setProfilePhoto, submitProfileInfo } from '../../redux/profileReducer'
 import { withRouter, Redirect } from 'react-router-dom'
 import { compose } from 'redux'
 
@@ -29,19 +30,27 @@ class ProfileContainer extends React.Component {
   }
 
   render() {
-    if (this.props.isFetching) return <Preloader />
-    return <Profile isOwner={this.isOwner} {...this.props} />
+    if (this.props.isFetching || !this.props.profileInfo) return <Preloader />
+    return <React.Fragment>
+      <Profile isOwner={this.isOwner} {...this.props} />
+      <MyPostsContainer />
+    </React.Fragment>
   }
 
 }
 
 const mapStateToProps = (state) => ({
   profileInfo: state.profilePage.profileInfo,
+  updateProfileInfoSuccess: state.profilePage.updateProfileInfoSuccess,
   profileStatus: state.profilePage.profileStatus,
   isFetching: state.preloader.isFetching,
   auth: state.auth
 })
 
-export default compose(connect(mapStateToProps, { getProfileInfo, getProfileStatus, updateProfileStatus, setProfilePhoto }), withRouter)(ProfileContainer)
+export default compose(
+  connect(mapStateToProps, { 
+    getProfileInfo, getProfileStatus, updateProfileStatus, setProfilePhoto, submitProfileInfo 
+  }), 
+  withRouter)(ProfileContainer)
 
 // export default connect(mapStateToProps, {getProfileInfo})(withAuthRedirect(withRouter(ProfileContainer)))

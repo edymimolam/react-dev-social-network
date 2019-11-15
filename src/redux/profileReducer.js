@@ -1,15 +1,35 @@
 import { togglePreloader } from './preloaderReducer'
 import { profileAPI } from '../API/API'
+import { stopSubmit } from 'redux-form'
 
 const ADD_NEW_POST = 'profile/ADD-NEW-POST'
 const DELETE_POST = 'profile/DELETE_POST'
 const SET_PROFILE_INFO = 'profile/SET_PROFILE_INFO'
 const SET_PROFILE_STATUS = 'profile/SET_PROFILE_STATUS'
-const SET_PROFILE_PHOTO_SUCCESS = 'profile/SET_PROFILE_PHOTO_SUCCESS'
+const UPLOAD_PROFILE_PHOTO_SUCCESS = 'profile/UPLOAD_PROFILE_PHOTO_SUCCESS'
+const UPDATE_PROFILE_INFO_SUCCESS = 'profile/UPDATE_PROFILE_INFO_SUCCESS'
 
 
 const initialState = {
-  profileInfo: null,
+  profileInfo: {
+    "aboutMe": "",
+    "contacts": {
+      "skype": "",
+      "vk": "",
+      "facebook": "",
+      "icq": "",
+      "email": "",
+      "googlePlus": "",
+      "twitter": "",
+      "instagram": "",
+      "whatsApp": ""
+    },
+    "lookingForAJob": "",
+    "lookingForAJobDescription": "",
+    "fullName": "",
+    "userId": ""
+  },
+  updateProfileInfoSuccess: true,
   posts: [
     { id: 1, message: 'Hi, how are you?', likesCount: 12 },
     { id: 2, message: 'It\'s my first post', likesCount: 11 },
@@ -51,10 +71,16 @@ const profileReducer = (state = initialState, action) => {
         profileStatus: action.profileStatus
       }
 
-    case SET_PROFILE_PHOTO_SUCCESS: 
+    case UPLOAD_PROFILE_PHOTO_SUCCESS:
       return {
         ...state,
-        profileInfo: {...state.profileInfo, photos: action.photos}
+        profileInfo: { ...state.profileInfo, photos: action.photos }
+      }
+
+    case UPDATE_PROFILE_INFO_SUCCESS:
+      return {
+        ...state,
+        updateProfileInfoSuccess: action.payload
       }
 
     default:
@@ -66,8 +92,8 @@ export const addNewPost = (newPost) => ({ type: ADD_NEW_POST, newPost })
 export const deletePost = (id) => ({ type: DELETE_POST, id })
 const setProfileInfo = (profileInfo) => ({ type: SET_PROFILE_INFO, profileInfo })
 const setProfileStatus = (profileStatus) => ({ type: SET_PROFILE_STATUS, profileStatus })
-const setProfilePhotoSuccess = (photos) => {return { type: SET_PROFILE_PHOTO_SUCCESS, photos }}
-
+const uploadProfilePhotoSuccess = (photos) => ({ type: UPLOAD_PROFILE_PHOTO_SUCCESS, photos })
+const updateProfileInfoSuccess = (payload) => ({type: UPDATE_PROFILE_INFO_SUCCESS, payload})
 
 export const getProfileInfo = (userId) => async (dispatch) => {
   dispatch(togglePreloader(true))
@@ -89,8 +115,26 @@ export const updateProfileStatus = (status) => async (dispatch) => {
 export const setProfilePhoto = (img) => async (dispatch) => {
   dispatch(togglePreloader(true))
   let data = await profileAPI.uploadProfilePhoto(img)
-  if (data.resultCode === 0) dispatch(setProfilePhotoSuccess(data.data.photos))
+  if (data.resultCode === 0) dispatch(uploadProfilePhotoSuccess(data.data.photos))
   dispatch(togglePreloader(false))
+}
+
+export const submitProfileInfo = (values) => (dispatch) => {
+  dispatch(togglePreloader(true))
+  profileAPI.updateProfileInfo(values).then(data => {
+    if (data.resultCode === 0) {
+      dispatch(updateProfileInfoSuccess(true))
+      dispatch(getProfileInfo(values.userId))
+    } else {
+      dispatch(updateProfileInfoSuccess(false))
+      let message = (data.messages.length > 0) ? data.messages[0] : 'Server error'
+      dispatch(stopSubmit('profile-info', { _error: message }))
+    }
+    dispatch(togglePreloader(false))
+  }
+
+  )
+
 }
 
 export default profileReducer

@@ -1,39 +1,37 @@
-import React, { useState } from 'react';
-import style from './ProfileInfo.module.css'
-import userIcon from '../../../assets/img/user-icon.png'
-import ProfileStatusViaHooks from './ProfileStatus/ProfileStatusViaHooks'
-import Preloader from '../../common/Preloader/Preloader'
+import React from 'react'
 
+const ProfileInfo = ({ isOwner, setEditMode,
+  profileInfo: { aboutMe, fullName, lookingForAJob, lookingForAJobDescription, contacts } }) => {
 
-const ProfileInfo = ({ profileInfo, profileInfo: { aboutMe, photos, fullName }, profileStatus, updateProfileStatus, setProfilePhoto, isOwner }) => {
+  return <div>
 
-
-  const onProfilePhotoUpload = (e) => {
-    if (e.target.files.length)
-      setProfilePhoto(e.target.files[0])
-  } 
-
-  if (!profileInfo) return <Preloader />
-
-  return (
     <div>
-      <div className={style.descriptionBlock}>
-        <div>
-          <img
-            src={photos.large || userIcon}
-            alt="User Image"
-            className={style.userImg}
-          />
-          {isOwner && <input onChange={onProfilePhotoUpload} type="file" name="profilePhotoUpload" accept=".jpg, .jpeg, .png"></input>}
-
-        </div>
-        <span>{aboutMe}</span>
-      </div>
-      <div>
-        <ProfileStatusViaHooks profileStatus={profileStatus} updateProfileStatus={updateProfileStatus} />
-      </div>
+      <b>{fullName}</b>
     </div>
-  )
+
+    <div>
+      <b>About me: </b> <span>{aboutMe}</span>
+    </div>
+
+    <div>
+      <b>Looking for a job: </b> <span>{lookingForAJob ? 'yes' : 'no'}</span>
+    </div>
+
+    <div>
+      <b>Job description: </b> <span>{lookingForAJobDescription}</span>
+    </div>
+
+    <div>
+      <b>Contacts - </b>
+      {
+        Object.keys(contacts).map(key => <div key={key}>
+          <b>{key}: </b> <span>{contacts[key]}</span>
+        </div>)
+      }
+    </div>
+
+    {isOwner && <button onClick={() => setEditMode(true)}>Edit</button>}
+  </div>
 }
 
 export default ProfileInfo

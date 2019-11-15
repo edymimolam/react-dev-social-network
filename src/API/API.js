@@ -23,6 +23,7 @@ export const usersAPI = {
 
 export const profileAPI = {
   getProfileInfo(id) { return server.get(`/profile/${id}`).then(r => r.data) },
+  updateProfileInfo(info) {return server.put('/profile', info).then(r => r.data)},
   getProfileStatus(id) { return server.get(`/profile/status/${id}`).then(r => r.data) },
   updateProfileStatus(status) { return server.put('/profile/status', { status }).then(r => r.data) },
   uploadProfilePhoto(img) {
