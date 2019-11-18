@@ -1,4 +1,4 @@
-import React, { lazy, Component, Suspense } from 'react'
+import React, { lazy, Component} from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { initialization } from './redux/appReducer'
 import { connect } from 'react-redux'

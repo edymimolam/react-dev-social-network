@@ -11,24 +11,7 @@ const UPDATE_PROFILE_INFO_SUCCESS = 'profile/UPDATE_PROFILE_INFO_SUCCESS'
 
 
 const initialState = {
-  profileInfo: {
-    "aboutMe": "",
-    "contacts": {
-      "skype": "",
-      "vk": "",
-      "facebook": "",
-      "icq": "",
-      "email": "",
-      "googlePlus": "",
-      "twitter": "",
-      "instagram": "",
-      "whatsApp": ""
-    },
-    "lookingForAJob": "",
-    "lookingForAJobDescription": "",
-    "fullName": "",
-    "userId": ""
-  },
+  profileInfo: null,
   updateProfileInfoSuccess: true,
   posts: [
     { id: 1, message: 'Hi, how are you?', likesCount: 12 },

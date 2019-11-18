@@ -6,21 +6,22 @@ import { login } from '../../redux/authReducer'
 import { Redirect } from 'react-router-dom'
 
 
-const Login = ({ isAuth, logIn }) => {
+const Login = ({ isAuth, logIn, captchaURL }) => {
 
   if (isAuth) return <Redirect to='/profile' />
 
   return <div className={style.container}>
+
     <h1>Login</h1>
-    <LoginForm onSubmit={({ email, password, rememberMe }) => logIn(email, password, rememberMe)} />
+
+    <LoginForm onSubmit={({ email, password, rememberMe, captchaText }) => {debugger; return logIn(email, password, rememberMe, captchaText)}} 
+      captchaURL={captchaURL} 
+    />
+
   </div>
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  logIn: (email, password, rememberMe) => { dispatch(login(email, password, rememberMe)) }
-})
-
-const mapStateToProps = (state) => ({ isAuth: state.auth.isAuthorized })
+const mapStateToProps = (state) => ({ isAuth: state.auth.isAuthorized, captchaURL: state.auth.captchaURL })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, login)(Login)
