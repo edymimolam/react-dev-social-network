@@ -1,15 +1,15 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import React from "react";
+import { Field, reduxForm } from "redux-form";
 
 const NewMessageForm = props => {
-  const {handleSubmit} = props
-  return <form onSubmit={handleSubmit} >
+  const { handleSubmit } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <Field name="newMessageText" component="textarea" />
 
-    <Field name='newMessageText'component='textarea'/>
-    
-    <button type='submit'>Push me</button>
+      <button type="submit">Push me</button>
+    </form>
+  );
+};
 
-  </form>
-}
-
-export default reduxForm({form: 'newMessage'})(NewMessageForm)
+export default reduxForm({ form: "newMessage" })(NewMessageForm);

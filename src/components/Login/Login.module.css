@@ -21,9 +21,9 @@
   padding: 0.5rem;
   width: 100%;
   box-sizing: border-box;
-  font-size: 1rem
+  font-size: 1rem;
 }
-.checkbox::after{
-  content: 'Remember me';
+.checkbox::after {
+  content: "Remember me";
   margin-left: 1.5rem;
 }

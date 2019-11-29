@@ -1,14 +1,14 @@
-import React from 'react'
-import Navbar from './Navbar/Navbar'
-import FriendsContainer from './Friends/FriendsContainer'
+import React from "react";
+import Navbar from "./Navbar/Navbar";
+import FriendsContainer from "./Friends/FriendsContainer";
 
 const Sidebar = () => {
-  return(
+  return (
     <div className="sidebar">
-      <Navbar/>
-      <FriendsContainer/>
+      <Navbar />
+      <FriendsContainer />
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

@@ -1,13 +1,13 @@
-.paginationContainer{
+.paginationContainer {
   margin: 0 auto;
   max-width: 50%;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
 }
-.page{
+.page {
   cursor: pointer;
 }
-.pageActive{
+.pageActive {
   font-weight: bold;
 }

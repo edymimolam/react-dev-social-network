@@ -1,48 +1,46 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import Users from './Users'
-import Preloader from '../common/Preloader/Preloader'
-import {follow, unfollow, getUsers } from '../../redux/usersReducer'
-
+import React from "react";
+import { connect } from "react-redux";
+import Users from "./Users";
+import Preloader from "../common/Preloader/Preloader";
+import { follow, unfollow, getUsers } from "../../redux/usersReducer";
 
 class UsersContainer extends React.Component {
-
   componentDidMount() {
-    this.props.getUsers(this.props.currentPage, this.props.usersPerPage)
+    this.props.getUsers(this.props.currentPage, this.props.usersPerPage);
   }
 
-  onPageClick = (pageNum) => this.props.getUsers(pageNum)
+  onPageClick = pageNum => this.props.getUsers(pageNum);
 
-  onFollowUserClick = (id) => this.props.follow(id)
+  onFollowUserClick = id => this.props.follow(id);
 
-  onUnfollowUserClick = (id) => this.props.unfollow(id)
+  onUnfollowUserClick = id => this.props.unfollow(id);
 
   render() {
-  
-    return <React.Fragment> 
-      {this.props.isFetching && <Preloader/>}
-      <Users  
-        users={this.props.users} 
-        usersTotalCount={this.props.usersTotalCount} 
-        usersPerPage={this.props.usersPerPage} 
-        currentPage={this.props.currentPage} 
-        onFollowUserClick={this.onFollowUserClick} 
-        onUnfollowUserClick={this.onUnfollowUserClick} 
-        onPageClick={this.onPageClick}
-      />
-    </React.Fragment>
+    return (
+      <React.Fragment>
+        {this.props.isFetching && <Preloader />}
+        <Users
+          users={this.props.users}
+          usersTotalCount={this.props.usersTotalCount}
+          usersPerPage={this.props.usersPerPage}
+          currentPage={this.props.currentPage}
+          onFollowUserClick={this.onFollowUserClick}
+          onUnfollowUserClick={this.onUnfollowUserClick}
+          onPageClick={this.onPageClick}
+        />
+      </React.Fragment>
+    );
   }
-
 }
 
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   users: state.usersPage.users,
   usersTotalCount: state.usersPage.usersTotalCount,
   usersPerPage: state.usersPage.usersPerPage,
   currentPage: state.usersPage.currentPage,
   isFetching: state.preloader.isFetching
-})
+});
 
-export default connect(mapStateToProps, {follow, unfollow, getUsers})
-(UsersContainer)
+export default connect(mapStateToProps, { follow, unfollow, getUsers })(
+  UsersContainer
+);

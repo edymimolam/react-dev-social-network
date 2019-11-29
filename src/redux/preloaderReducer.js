@@ -1,24 +1,25 @@
-const TOGGLE_PRELOADER = 'preloader/TOGGLE_PRELOADER'
+const TOGGLE_PRELOADER = "preloader/TOGGLE_PRELOADER";
 
 let initialState = {
   isFetching: true
-}
+};
 
 const preloaderReducer = (state = initialState, action) => {
-
-  switch(action.type) {
-
+  switch (action.type) {
     case TOGGLE_PRELOADER:
       return {
         ...state,
         isFetching: action.isFetching
-      }
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export const togglePreloader = (isFetching) => ({type: TOGGLE_PRELOADER, isFetching})
+export const togglePreloader = isFetching => ({
+  type: TOGGLE_PRELOADER,
+  isFetching
+});
 
-export default preloaderReducer
+export default preloaderReducer;

@@ -1,5 +1,5 @@
-import React, {Suspense} from 'react'
-import Preloader from '../components/common/Preloader/Preloader'
+import React, { Suspense } from "react";
+import Preloader from "../components/common/Preloader/Preloader";
 
 // const withSuspense = (WrappedComponent) => {
 //   return class extends React.Component {
@@ -11,12 +11,12 @@ import Preloader from '../components/common/Preloader/Preloader'
 //   }
 // }
 
-const withSuspense = (WrappedComponent) => (props) => {
-  return <Suspense fallback={<Preloader/>}>
-    <WrappedComponent {...props}/>
-  </Suspense>
-}
+const withSuspense = WrappedComponent => props => {
+  return (
+    <Suspense fallback={<Preloader />}>
+      <WrappedComponent {...props} />
+    </Suspense>
+  );
+};
 
-
-
-export default withSuspense
+export default withSuspense;
