@@ -5,7 +5,10 @@ import { NavLink } from "react-router-dom";
 const Header = ({ authInfo, logout }) => {
   return (
     <header className={style.header}>
-      <img src="https://www.freelogodesign.org/Content/img/logo-ex-7.png" />
+      <img
+        src="https://www.freelogodesign.org/Content/img/logo-ex-7.png"
+        alt="logo"
+      />
       <div>
         {authInfo.isAuthorized ? (
           <div>

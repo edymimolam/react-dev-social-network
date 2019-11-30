@@ -1,9 +1,11 @@
 import React, { lazy, Component } from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import { initialization } from "./redux/appReducer";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import "./App.css";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { theme } from "./Theme";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Preloader from "./components/common/Preloader/Preloader";
@@ -27,21 +29,24 @@ class App extends Component {
     if (!this.props.isInit) return <Preloader />;
 
     return (
-      <div className="app-wrapper">
-        <HeaderContainer />
-        <Sidebar />
-        <div className="app-wrapper-content">
-          <Switch>
-            <Route path="/login" render={() => <Login />} />
-            <Route path="/dialogs" render={() => <DialogsContainer />} />
-            <Route
-              path="/profile/:userId?"
-              render={() => <ProfileContainer />}
-            />
-            <Route path="/users" render={() => <UsersContainer />} />
-          </Switch>
+      <ThemeProvider theme={theme}>
+        <div className="app-wrapper">
+          <HeaderContainer />
+          <Sidebar />
+          <div className="app-wrapper-content">
+            <Switch>
+              <Route path="/login" render={() => <Login />} />
+              <Route path="/dialogs" render={() => <DialogsContainer />} />
+              <Route
+                path="/profile/:userId?"
+                render={() => <ProfileContainer />}
+              />
+              <Route path="/users" render={() => <UsersContainer />} />
+              <Route path="/" render={() => <Redirect to="/profile" />} />
+            </Switch>
+          </div>
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
 }

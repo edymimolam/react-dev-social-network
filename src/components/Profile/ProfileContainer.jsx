@@ -10,7 +10,7 @@ import {
   setProfilePhoto,
   submitProfileInfo
 } from "../../redux/profileReducer";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 
 class ProfileContainer extends React.Component {
@@ -19,10 +19,14 @@ class ProfileContainer extends React.Component {
     this.isOwner = !this.props.match.params.userId;
     if (!userId) {
       userId = this.props.auth.id;
-      if (!userId) this.props.history.push("/login");
     }
-    this.props.getProfileInfo(userId);
-    this.props.getProfileStatus(userId);
+
+    if (!userId || userId === null) {
+      this.props.history.push("/login");
+    } else {
+      this.props.getProfileInfo(userId);
+      this.props.getProfileStatus(userId);
+    }
   }
 
   componentDidMount() {
