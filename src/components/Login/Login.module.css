@@ -6,27 +6,17 @@
   flex-flow: column;
   align-items: center;
 }
-
 .form {
   display: flex;
   flex-flow: column;
   width: 100%;
   max-width: 300px;
-  /* height: 15rem;
-  justify-content: space-between; */
 }
-
 .buttons {
   margin-bottom: 2rem;
 }
-/* .form div {
-  margin: 1rem;
-}
-
-.form input,
-.form button {
-  padding: 0.5rem;
+.captchaImage {
+  margin-top: 16px;
+  margin-bottom: 8px;
   width: 100%;
-  box-sizing: border-box;
-  font-size: 1rem;
-} */
+}

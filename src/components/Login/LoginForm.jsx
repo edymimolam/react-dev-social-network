@@ -1,11 +1,18 @@
 import React from "react";
 import style from "./Login.module.css";
 import { Field, reduxForm } from "redux-form";
-import { Input, renderTextField, renderCheckbox } from "../common/Forms/Fields";
+import { renderTextField, renderCheckbox } from "../common/Forms/Fields";
 import { required, email, minLength2 } from "../../utils/validation";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
-const LoginForm = ({ error, handleSubmit, submitting, captchaURL }) => {
+const LoginForm = ({
+  error,
+  handleSubmit,
+  pristine,
+  submitting,
+  captchaURL
+}) => {
   return (
     <form onSubmit={handleSubmit} className={style.form}>
       <div className={style.buttons}>
@@ -30,33 +37,35 @@ const LoginForm = ({ error, handleSubmit, submitting, captchaURL }) => {
           fullWidth={true}
           validate={[required, minLength2]}
         />
+        {captchaURL && (
+          <div>
+            <img
+              src={captchaURL}
+              alt="captcha"
+              className={style.captchaImage}
+            />
+            <Field
+              name="captchaText"
+              component={renderTextField}
+              margin="normal"
+              label="captcha"
+              fullWidth={true}
+            />
+          </div>
+        )}
       </div>
-
       <Field name="rememberMe" component={renderCheckbox} label="Remember me" />
-
       {error && (
-        <div>
-          <strong>{error}</strong>
-        </div>
+        <Typography color="error" variant="overline">
+          {error}
+        </Typography>
       )}
-
-      {captchaURL && (
-        <div>
-          <img src={captchaURL} alt="captcha" />
-          <Field name="captchaText" component={Input} type="text" />
-        </div>
-      )}
-
-      {/* <button type="submit" disabled={submitting}>
-        Submit
-      </button> */}
-
       <Button
-        type="submit"
-        disabled={submitting}
+        size="large"
         variant="contained"
         color="primary"
-        size="large"
+        type="submit"
+        disabled={pristine || submitting}
       >
         Submit
       </Button>

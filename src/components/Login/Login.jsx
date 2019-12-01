@@ -6,7 +6,7 @@ import { login } from "../../redux/authReducer";
 import { Redirect } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 
-const Login = ({ isAuthorized, login, captchaURL }) => {
+const Login = ({ isAuthorized, logIn, captchaURL }) => {
   if (isAuthorized) return <Redirect to="/profile" />;
   return (
     <div className={style.container}>
@@ -15,8 +15,7 @@ const Login = ({ isAuthorized, login, captchaURL }) => {
       </Typography>
       <LoginForm
         onSubmit={({ email, password, rememberMe, captchaText }) =>
-          // login(email, password, rememberMe, captchaText)
-          console.log(email, password, rememberMe, captchaText)
+          logIn(email, password, rememberMe, captchaText)
         }
         captchaURL={captchaURL}
       />
@@ -29,4 +28,10 @@ const mapStateToProps = ({ auth: { isAuthorized, captchaURL } }) => ({
   captchaURL
 });
 
-export default connect(mapStateToProps, { login })(Login);
+const mapDispatchToProps = dispatch => ({
+  logIn: (email, password, rememberMe, captchaText) => {
+    dispatch(login(email, password, rememberMe, captchaText));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
