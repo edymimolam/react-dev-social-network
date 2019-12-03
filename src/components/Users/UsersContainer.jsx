@@ -1,7 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import Users from "./Users";
+import Pagination from "../common/Pagination/Pagination";
 import Preloader from "../common/Preloader/Preloader";
+
 import { follow, unfollow, getUsers } from "../../redux/usersReducer";
 
 class UsersContainer extends React.Component {
@@ -16,29 +18,43 @@ class UsersContainer extends React.Component {
   onUnfollowUserClick = id => this.props.unfollow(id);
 
   render() {
+    if (this.props.isFetching) return <Preloader />;
     return (
-      <React.Fragment>
-        {this.props.isFetching && <Preloader />}
-        <Users
-          users={this.props.users}
+      <Fragment>
+        <Pagination
           usersTotalCount={this.props.usersTotalCount}
           usersPerPage={this.props.usersPerPage}
           currentPage={this.props.currentPage}
-          onFollowUserClick={this.onFollowUserClick}
-          onUnfollowUserClick={this.onUnfollowUserClick}
           onPageClick={this.onPageClick}
         />
-      </React.Fragment>
+        <Users
+          users={this.props.users}
+          onFollowUserClick={this.onFollowUserClick}
+          onUnfollowUserClick={this.onUnfollowUserClick}
+          isAuthorized={this.props.isAuthorized}
+        />
+        <Pagination
+          usersTotalCount={this.props.usersTotalCount}
+          usersPerPage={this.props.usersPerPage}
+          currentPage={this.props.currentPage}
+          onPageClick={this.onPageClick}
+        />
+      </Fragment>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  users: state.usersPage.users,
-  usersTotalCount: state.usersPage.usersTotalCount,
-  usersPerPage: state.usersPage.usersPerPage,
-  currentPage: state.usersPage.currentPage,
-  isFetching: state.preloader.isFetching
+const mapStateToProps = ({
+  usersPage: { users, usersTotalCount, usersPerPage, currentPage },
+  preloader: { isFetching },
+  auth: { isAuthorized }
+}) => ({
+  users,
+  usersTotalCount,
+  usersPerPage,
+  currentPage,
+  isFetching,
+  isAuthorized
 });
 
 export default connect(mapStateToProps, { follow, unfollow, getUsers })(

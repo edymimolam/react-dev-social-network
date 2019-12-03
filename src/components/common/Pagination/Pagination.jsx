@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import style from "./Pagination.module.css";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
+import ArrowForwardRoundedIcon from "@material-ui/icons/ArrowForwardRounded";
 
 const Pagination = ({
   usersTotalCount,
@@ -8,7 +12,9 @@ const Pagination = ({
   onPageClick,
   portionSize = 10
 }) => {
-  let [portionCount, setPortionCount] = useState(1);
+  let [portionCount, setPortionCount] = useState(
+    Math.ceil(currentPage / portionSize)
+  );
 
   let pagesTotalCount = Math.ceil(usersTotalCount / usersPerPage);
   let portionsTotalCount = Math.ceil(pagesTotalCount / portionSize);
@@ -27,7 +33,13 @@ const Pagination = ({
   return (
     <div className={style.paginationContainer}>
       {portionCount > 1 && (
-        <button onClick={() => setPortionCount(portionCount - 1)}>Prev</button>
+        <IconButton
+          onClick={() => setPortionCount(portionCount - 1)}
+          color="primary"
+        >
+          <ArrowBackRoundedIcon />
+        </IconButton>
+        // <button onClick={() => setPortionCount(portionCount - 1)}>Prev</button>
       )}
 
       {pagesAmount()
@@ -35,19 +47,24 @@ const Pagination = ({
           p => p >= firstPageOfCurrentPortion && p <= lastPageOfCurrentPortion
         )
         .map(p => (
-          <span
+          <IconButton
             key={p}
-            className={`${style.page} ${
-              currentPage === p ? style.pageActive : ""
-            }`}
+            className={style.page}
+            color={currentPage === p ? "secondary" : ""}
             onClick={() => onPageClick(p)}
           >
-            {p}
-          </span>
+            <Typography variant="button">{p}</Typography>
+          </IconButton>
         ))}
 
       {portionCount < portionsTotalCount && (
-        <button onClick={() => setPortionCount(portionCount + 1)}>Next</button>
+        <IconButton
+          onClick={() => setPortionCount(portionCount + 1)}
+          color="primary"
+        >
+          <ArrowForwardRoundedIcon />
+        </IconButton>
+        // <button onClick={() => setPortionCount(portionCount + 1)}>Next</button>
       )}
     </div>
   );

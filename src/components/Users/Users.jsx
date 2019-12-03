@@ -1,34 +1,31 @@
-import React from "react";
-import style from "./Users.module.css";
-import Pagination from "../common/Pagination/Pagination";
+import React, { Fragment } from "react";
 import User from "./User";
+import { makeStyles } from "@material-ui/core/styles";
 
-const Users = ({
-  users,
-  usersTotalCount,
-  usersPerPage,
-  currentPage,
-  onPageClick,
-  onUnfollowUserClick,
-  onFollowUserClick
-}) => {
+const useStyles = makeStyles(theme => ({
+  root: {
+    margin: theme.spacing(3, 0)
+  }
+}));
+
+const Users = props => {
+  const { users, onUnfollowUserClick, onFollowUserClick, isAuthorized } = props;
+  const classes = useStyles();
+
   return (
-    <div className={style.usersContainer}>
-      <Pagination
-        usersTotalCount={usersTotalCount}
-        usersPerPage={usersPerPage}
-        currentPage={currentPage}
-        onPageClick={onPageClick}
-      />
-      {users.map(u => (
-        <User
-          key={u.id}
-          user={u}
-          follow={onFollowUserClick}
-          unfollow={onUnfollowUserClick}
-        />
-      ))}
-    </div>
+    <Fragment>
+      <div className={classes.root}>
+        {users.map(u => (
+          <User
+            key={u.id}
+            user={u}
+            follow={onFollowUserClick}
+            unfollow={onUnfollowUserClick}
+            isAuthorized={isAuthorized}
+          />
+        ))}
+      </div>
+    </Fragment>
   );
 };
 
