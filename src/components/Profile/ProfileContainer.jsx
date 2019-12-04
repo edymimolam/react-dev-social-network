@@ -37,24 +37,27 @@ class ProfileContainer extends React.Component {
     if (this.props.match.params.userId !== prevProps.match.params.userId)
       this.rerenderProfile();
   }
-
   render() {
     if (this.props.isFetching || !this.props.profileInfo) return <Preloader />;
     return (
       <React.Fragment>
         <Profile isOwner={this.isOwner} {...this.props} />
-        <MyPostsContainer />
+        {/* <MyPostsContainer /> */}
       </React.Fragment>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  profileInfo: state.profilePage.profileInfo,
-  updateProfileInfoSuccess: state.profilePage.updateProfileInfoSuccess,
-  profileStatus: state.profilePage.profileStatus,
-  isFetching: state.preloader.isFetching,
-  auth: state.auth
+const mapStateToProps = ({
+  profilePage: { profileInfo, updateProfileInfoSuccess, profileStatus },
+  preloader: { isFetching },
+  auth
+}) => ({
+  profileInfo,
+  updateProfileInfoSuccess,
+  profileStatus,
+  isFetching,
+  auth
 });
 
 export default compose(

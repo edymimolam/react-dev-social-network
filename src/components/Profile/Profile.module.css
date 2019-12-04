@@ -1,12 +1,22 @@
 .descriptionBlock {
-  padding: 10px;
   display: flex;
-  flex-flow: column;
-  align-items: baseline;
 }
-.background {
+.leftPane,
+.rightPane {
+  padding: 16px;
+}
+.leftPane {
+  width: 40%;
+}
+.rightPane {
+  width: 60%;
+}
+.nameBlock {
+  margin-bottom: 24px;
+}
+/* .background {
   max-width: 100%;
   height: auto;
   display: flex;
   margin: 0;
-}
+} */

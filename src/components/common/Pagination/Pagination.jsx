@@ -50,7 +50,7 @@ const Pagination = ({
           <IconButton
             key={p}
             className={style.page}
-            color={currentPage === p ? "secondary" : ""}
+            color={currentPage === p ? "secondary" : "default"}
             onClick={() => onPageClick(p)}
           >
             <Typography variant="button">{p}</Typography>

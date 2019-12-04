@@ -1,45 +1,75 @@
-import React from "react";
+import React, { useState, useEffect, Fragment } from "react";
+import EditIcon from "@material-ui/icons/Edit";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
 
-class ProfileStatus extends React.Component {
-  state = {
-    editMode: false,
-    status: this.props.profileStatus
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex",
+    alignItems: "flex-end"
+  },
+  editIcon: {
+    marginLeft: theme.spacing(0.5)
+  }
+}));
+
+const ProfileStatusViaHooks = ({
+  profileStatus,
+  updateProfileStatus,
+  isOwner
+}) => {
+  let [editMode, setEditMode] = useState(false);
+  let [status, setStatus] = useState(profileStatus);
+  const classes = useStyles();
+
+  useEffect(() => {
+    setStatus(profileStatus);
+  }, [profileStatus]);
+
+  const enableEditMode = () => setEditMode(true);
+  const disableEditMode = () => setEditMode(false);
+
+  const onInputChange = e => setStatus(e.currentTarget.value);
+  const inputSubmit = () => {
+    disableEditMode();
+    updateProfileStatus(status);
+  };
+  const handleKeyDown = e => {
+    if (e.key === "Enter") inputSubmit();
   };
 
-  enableEditMode = () => this.setState({ editMode: true });
-  disableEditMode = () => this.setState({ editMode: false });
+  return (
+    <Fragment>
+      {editMode && (
+        <TextField
+          autoFocus
+          type="text"
+          onChange={onInputChange}
+          onBlur={inputSubmit}
+          onKeyDown={handleKeyDown}
+          value={status}
+        />
+      )}
+      {!editMode && (
+        <div className={classes.root}>
+          <Typography variant="button">
+            {status !== "" ? status : "let's set status"}
+          </Typography>
+          {isOwner && (
+            <IconButton
+              size="small"
+              onClick={enableEditMode}
+              className={classes.editIcon}
+            >
+              <EditIcon />
+            </IconButton>
+          )}
+        </div>
+      )}
+    </Fragment>
+  );
+};
 
-  onInputChange = e => this.setState({ status: e.currentTarget.value });
-  onInputBlur = () => {
-    this.disableEditMode();
-    this.props.updateProfileStatus(this.state.status);
-  };
-
-  componentDidUpdate(prevProps) {
-    if (this.props.profileStatus !== prevProps.profileStatus)
-      this.setState({ status: this.props.profileStatus });
-  }
-
-  render() {
-    return (
-      <div>
-        {this.state.editMode && (
-          <input
-            autoFocus
-            type="text"
-            onChange={this.onInputChange}
-            onBlur={this.onInputBlur}
-            value={this.state.status}
-          />
-        )}
-        {!this.state.editMode && (
-          <span onDoubleClick={this.enableEditMode}>
-            {this.state.status !== "" ? this.state.status : "let's set status"}
-          </span>
-        )}
-      </div>
-    );
-  }
-}
-
-export default ProfileStatus;
+export default ProfileStatusViaHooks;
