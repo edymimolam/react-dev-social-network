@@ -1,0 +1,2 @@
+*{box-sizing:border-box}.app-wrapper{margin:0 auto;display:grid;width:100%;max-width:1200px;grid-template-areas:"h h" "n c";grid-template-rows:60px 1fr;grid-template-columns:2fr 10fr}.app-wrapper-content{grid-area:c;background-color:#f9f9f9;position:relative;min-height:100vh}.Preloader_preloaderContainer__1D5OQ{position:absolute;width:100%;height:100%;display:flex;background-color:rgba(0,0,0,.3)}.Preloader_preloader__2dvkO{display:flex;height:100vh;width:100%;justify-content:center;align-items:center}
+/*# sourceMappingURL=main.d95b2f71.chunk.css.map */
