@@ -1,63 +1,92 @@
 import React from "react";
 import { reduxForm, Field } from "redux-form";
-import { Input, TextArea } from "../../common/Forms/Fields";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { renderTextField, renderCheckbox } from "../../common/Forms/Fields";
+import { makeStyles } from "@material-ui/core/styles";
+import style from "../Profile.module.css";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2),
+    display: "flex",
+    flexFlow: "column",
+    "& > *": { marginBottom: theme.spacing(1) }
+  }
+}));
 
 const ProfileInfoForm = ({
   handleSubmit,
   profileInfo: { contacts },
   submitProfileInfo,
-  error
+  setEditMode,
+  error,
+  pristine,
+  submitting
 }) => {
-  const submit = values => console.log(values);
+  const classes = useStyles();
+
   return (
-    <form onSubmit={handleSubmit(val => submitProfileInfo(val))}>
-      <h1>Form</h1>
+    <form
+      onSubmit={handleSubmit(val => submitProfileInfo(val))}
+      className={classes.root}
+    >
+      <Field name="fullName" component={renderTextField} label="Name" />
 
-      <Field name="fullName" type="text" component={Input} label="Name: " />
-
-      <Field
-        name="aboutMe"
-        type="text"
-        component={TextArea}
-        label="About me: "
-      />
+      <Field name="aboutMe" component={renderTextField} label="About me" />
 
       <Field
         name="lookingForAJob"
-        type="checkbox"
-        component={Input}
-        label="Looking for a Job: "
+        component={renderCheckbox}
+        label="Looking for a Job"
       />
 
       <Field
         name="lookingForAJobDescription"
-        type="text"
-        component={TextArea}
-        label="Job Description: "
+        component={renderTextField}
+        label="Job Description"
       />
 
-      <div>
-        <b>contacts</b>
-        {Object.keys(contacts).map(key => (
+      {Object.keys(contacts).map(key => {
+        if (key === "vk" || key === "mainLink" || key === "website")
+          return null;
+
+        return (
           <Field
             name={`contacts.${key}`}
             type="text"
-            component={Input}
-            label={`${key}: `}
+            component={renderTextField}
+            label={key}
             key={`input-${key}`}
           />
-        ))}
-      </div>
+        );
+      })}
 
       {error && (
-        <div>
-          <strong>{error}</strong>
-        </div>
+        <Typography color="error" variant="overline">
+          {error}
+        </Typography>
       )}
 
-      <div>
-        <button type="submit">Save</button>
-      </div>
+      <Button
+        size="medium"
+        variant="contained"
+        color="primary"
+        type="submit"
+        fullwidth="false"
+        disabled={pristine || submitting}
+      >
+        Save
+      </Button>
+
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => setEditMode(false)}
+        className={style.editBtn}
+      >
+        Back
+      </Button>
     </form>
   );
 };

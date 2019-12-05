@@ -50,6 +50,7 @@ const Profile = props => {
             initialValues={profileInfo}
             profileInfo={profileInfo}
             submitProfileInfo={submitProfileInfo}
+            setEditMode={setEditMode}
           />
         ) : (
           <ProfileInfo

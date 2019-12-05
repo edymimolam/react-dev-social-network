@@ -7,7 +7,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    position: "relative"
+    position: "relative",
+    maxWidth: 500,
+    marginLeft: "auto",
+    marginRight: "auto"
   },
   avatar: {
     width: "100%",

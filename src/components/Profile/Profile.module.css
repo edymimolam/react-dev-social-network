@@ -1,5 +1,6 @@
 .descriptionBlock {
   display: flex;
+  flex-flow: wrap;
 }
 .leftPane,
 .rightPane {
@@ -10,9 +11,24 @@
 }
 .rightPane {
   width: 60%;
+  position: relative;
+}
+@media screen and (max-width: 900px) {
+  .leftPane,
+  .rightPane {
+    width: 100%;
+  }
+}
+.list {
+  position: static;
+}
+.editBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 .nameBlock {
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
 }
 /* .background {
   max-width: 100%;

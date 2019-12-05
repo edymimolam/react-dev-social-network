@@ -1,24 +1,19 @@
 import React from "react";
+import SocialButtons from "./ProfileInfoSocialButtons";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
+import style from "../Profile.module.css";
 
 export default ({
   isOwner,
   setEditMode,
-  profileInfo: {
-    aboutMe,
-    fullName,
-    lookingForAJob,
-    lookingForAJobDescription,
-    contacts
-  }
+  profileInfo: { aboutMe, lookingForAJob, lookingForAJobDescription, contacts }
 }) => (
-  <List>
+  <List className={style.list}>
     <ListItem>
       <ListItemText primary="About me:" secondary={aboutMe}></ListItemText>
-      {/* <b>About me: </b> <span>{aboutMe}</span> */}
     </ListItem>
 
     <ListItem>
@@ -26,26 +21,26 @@ export default ({
         primary="Looking for a job:"
         secondary={lookingForAJob ? "yes" : "no"}
       />
-      {/* <b>Looking for a job: </b> <span>{lookingForAJob ? "yes" : "no"}</span> */}
     </ListItem>
 
     <ListItem>
       <ListItemText
-        primary="Job description"
+        primary="Job description:"
         secondary={lookingForAJobDescription}
       />
-      {/* <b>Job description: </b> <span>{lookingForAJobDescription}</span> */}
     </ListItem>
-    {/* 
-    <div>
-      <b>Contacts - </b> */}
-    {/* {Object.keys(contacts).map(key => (
-      <ListItem key={key}>
-        <ListItemText primary={`${key}:`} secondary={contacts[key]} />
-      </ListItem>
-    ))} */}
-    {/* </div> */}
+    <ListItem>
+      <SocialButtons contacts={contacts} />
+    </ListItem>
 
-    {isOwner && <button onClick={() => setEditMode(true)}>Edit</button>}
+    {isOwner && (
+      <Button
+        variant="outlined"
+        onClick={() => setEditMode(true)}
+        className={style.editBtn}
+      >
+        Edit
+      </Button>
+    )}
   </List>
 );

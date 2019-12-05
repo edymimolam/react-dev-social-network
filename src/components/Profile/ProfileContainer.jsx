@@ -1,6 +1,5 @@
 import React from "react";
 import Profile from "./Profile";
-import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import Preloader from "../common/Preloader/Preloader";
 import { connect } from "react-redux";
 import {
@@ -60,15 +59,15 @@ const mapStateToProps = ({
   auth
 });
 
+const mapDispatchToProps = dispatch => ({
+  getProfileInfo: userId => dispatch(getProfileInfo(userId)),
+  getProfileStatus: userId => dispatch(getProfileStatus(userId)),
+  updateProfileStatus: status => dispatch(updateProfileStatus(status)),
+  setProfilePhoto: img => dispatch(setProfilePhoto(img)),
+  submitProfileInfo: values => dispatch(submitProfileInfo(values))
+});
+
 export default compose(
-  connect(mapStateToProps, {
-    getProfileInfo,
-    getProfileStatus,
-    updateProfileStatus,
-    setProfilePhoto,
-    submitProfileInfo
-  }),
+  connect(mapStateToProps, mapDispatchToProps),
   withRouter
 )(ProfileContainer);
-
-// export default connect(mapStateToProps, {getProfileInfo})(withAuthRedirect(withRouter(ProfileContainer)))
