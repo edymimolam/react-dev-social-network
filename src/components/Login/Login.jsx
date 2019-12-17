@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { login } from "../../redux/authReducer";
 import { Redirect } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 
 const Login = ({ isAuthorized, logIn, captchaURL }) => {
   if (isAuthorized) return <Redirect to="/profile" />;
@@ -19,6 +21,27 @@ const Login = ({ isAuthorized, logIn, captchaURL }) => {
         }
         captchaURL={captchaURL}
       />
+      <Paper className={style.credentials}>
+        <Typography variant="h5" gutterBottom>
+          Testing Credentials
+        </Typography>
+        <Typography component="div" gutterBottom>
+          <Box fontWeight="fontWeightBold" component="span">
+            Email:
+          </Box>
+          <Box component="span" className={style.credential}>
+            free@samuraijs.com
+          </Box>
+        </Typography>
+        <Typography component="div" gutterBottom>
+          <Box fontWeight="fontWeightBold" component="span">
+            Password:
+          </Box>
+          <Box component="span" className={style.credential}>
+            free
+          </Box>
+        </Typography>
+      </Paper>
     </div>
   );
 };
